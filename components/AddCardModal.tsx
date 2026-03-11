@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { X, Loader2 } from 'lucide-react'
+import Image from 'next/image'
 import { createCard } from '@/lib/supabase'
 import { Card, CardNetwork } from '@/lib/types'
 import { getProviderInfo } from '@/lib/cardProviders'
@@ -35,58 +36,42 @@ const inputClass = (error?: string) => cn(
 function NetworkButton({
   value, selected, onSelect,
 }: {
-  value: CardNetwork
+  value: NonNullable<CardNetwork>
   selected: boolean
   onSelect: () => void
 }) {
-  const base = 'flex flex-col items-center justify-center gap-1.5 py-3 rounded-2xl border transition-all duration-150 cursor-pointer'
-  const active = 'border-[var(--c-text)] bg-[var(--c-hover-sm)] shadow-sm'
-  const inactive = 'border-[var(--c-border-md)] bg-[var(--c-input-bg)] hover:bg-[var(--c-hover-sm)]'
-
   return (
-    <button type="button" onClick={onSelect} className={cn(base, selected ? active : inactive)}>
+    <button
+      type="button"
+      onClick={onSelect}
+      className={cn(
+        'flex flex-col items-center justify-center gap-2 py-3.5 rounded-2xl border transition-all duration-150',
+        selected
+          ? 'border-[var(--c-text)] bg-[var(--c-hover-sm)] shadow-sm'
+          : 'border-[var(--c-border-md)] bg-[var(--c-input-bg)] hover:bg-[var(--c-hover-sm)]',
+      )}
+    >
       <NetworkVisual network={value} />
-      <span className="text-[10px] font-medium text-[var(--c-text-2)] tracking-wide uppercase">
-        {value ?? 'Autre'}
-      </span>
     </button>
   )
 }
 
-function NetworkVisual({ network }: { network: CardNetwork }) {
-  if (network === 'visa') {
-    return (
-      <svg width="42" height="14" viewBox="0 0 42 14" fill="none">
-        <text x="0" y="13" fontFamily="Times New Roman,serif" fontWeight="700" fontStyle="italic"
-          fontSize="16" fill="var(--c-text)" letterSpacing="-1">VISA</text>
-      </svg>
-    )
-  }
-  if (network === 'mastercard') {
-    return (
-      <svg width="36" height="22" viewBox="0 0 36 22" fill="none">
-        <circle cx="13" cy="11" r="11" fill="#EB001B" opacity="0.85" />
-        <circle cx="23" cy="11" r="11" fill="#F79E1B" opacity="0.85" />
-        <path d="M18 2.2a11 11 0 0 1 0 17.6A11 11 0 0 1 18 2.2z" fill="#FF5F00" opacity="0.85" />
-      </svg>
-    )
-  }
-  if (network === 'amex') {
-    return (
-      <svg width="44" height="16" viewBox="0 0 44 16" fill="none">
-        <rect width="44" height="16" rx="4" fill="#0064DC" opacity="0.15" />
-        <text x="22" y="12" textAnchor="middle" fontFamily="system-ui,sans-serif" fontWeight="800"
-          fontSize="8.5" letterSpacing="0.14em" fill="#0064DC">AMEX</text>
-      </svg>
-    )
-  }
-  // null — "Autre"
+const NETWORK_LOGOS: Record<NonNullable<CardNetwork>, { src: string; width: number; height: number; label: string }> = {
+  visa:       { src: '/networks/visa.png',       width: 44, height: 14, label: 'Visa' },
+  mastercard: { src: '/networks/mastercard.png', width: 36, height: 22, label: 'Mastercard' },
+  amex:       { src: '/networks/amex.svg',       width: 44, height: 16, label: 'Amex' },
+}
+
+function NetworkVisual({ network }: { network: NonNullable<CardNetwork> }) {
+  const logo = NETWORK_LOGOS[network]
   return (
-    <svg width="28" height="18" viewBox="0 0 28 18" fill="none">
-      <rect width="28" height="18" rx="4" stroke="var(--c-text-3)" strokeWidth="1.2" strokeDasharray="3 2" fill="none" />
-      <text x="14" y="13" textAnchor="middle" fontFamily="system-ui,sans-serif" fontWeight="700"
-        fontSize="9" fill="var(--c-text-3)">?</text>
-    </svg>
+    <Image
+      src={logo.src}
+      alt={logo.label}
+      width={logo.width}
+      height={logo.height}
+      className="object-contain"
+    />
   )
 }
 
@@ -225,10 +210,10 @@ export default function AddCardModal({ onClose, onCreated }: AddCardModalProps) 
             <label className="block text-[11px] font-semibold text-[var(--c-text-2)] uppercase tracking-wider mb-2">
               Réseau
             </label>
-            <div className="grid grid-cols-4 gap-2">
-              {(['visa', 'mastercard', 'amex', null] as CardNetwork[]).map((n) => (
+            <div className="grid grid-cols-3 gap-2">
+              {(['visa', 'mastercard', 'amex'] as NonNullable<CardNetwork>[]).map((n) => (
                 <NetworkButton
-                  key={String(n)}
+                  key={n}
                   value={n}
                   selected={form.network === n}
                   onSelect={() => setForm((f) => ({ ...f, network: n }))}

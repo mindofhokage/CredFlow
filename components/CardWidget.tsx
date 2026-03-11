@@ -12,66 +12,39 @@ interface CardWidgetProps {
   compact?: boolean
 }
 
-/* ── Network logos ─────────────────────────────────────────── */
-function VisaLogo() {
-  return (
-    <svg width="52" height="18" viewBox="0 0 52 18" fill="none">
-      <text
-        x="0" y="16"
-        fontFamily="Times New Roman, serif"
-        fontWeight="700"
-        fontStyle="italic"
-        fontSize="20"
-        fill="white"
-        opacity="0.92"
-        letterSpacing="-1"
-      >
-        VISA
-      </text>
-    </svg>
-  )
-}
-
-function MastercardLogo() {
-  return (
-    <svg width="38" height="24" viewBox="0 0 38 24" fill="none">
-      <circle cx="14" cy="12" r="12" fill="#EB001B" opacity="0.92" />
-      <circle cx="24" cy="12" r="12" fill="#F79E1B" opacity="0.92" />
-      <path
-        d="M19 4.8a12 12 0 0 1 0 14.4A12 12 0 0 1 19 4.8z"
-        fill="#FF5F00"
-        opacity="0.9"
-      />
-    </svg>
-  )
-}
-
-function AmexLogo() {
-  return (
-    <svg width="44" height="18" viewBox="0 0 44 18" fill="none">
-      {/* Blue background pill */}
-      <rect width="44" height="18" rx="4" fill="rgba(0,100,220,0.55)" />
-      <text
-        x="22" y="13"
-        textAnchor="middle"
-        fontFamily="system-ui, -apple-system, sans-serif"
-        fontWeight="800"
-        fontSize="9.5"
-        letterSpacing="0.12em"
-        fill="white"
-        opacity="0.95"
-      >
-        AMEX
-      </text>
-    </svg>
-  )
-}
+/* ── Network logos (official assets from /public/networks/) ── */
+const NETWORK_LOGOS = {
+  visa:       { src: '/networks/visa.png',       width: 50, height: 16 },
+  mastercard: { src: '/networks/mastercard.png', width: 38, height: 24 },
+  amex:       { src: '/networks/amex.svg',       width: 44, height: 16 },
+} as const
 
 function NetworkLogo({ network }: { network: 'visa' | 'mastercard' | 'amex' | null }) {
-  if (network === 'visa') return <VisaLogo />
-  if (network === 'mastercard') return <MastercardLogo />
-  if (network === 'amex') return <AmexLogo />
-  return null
+  if (!network) return null
+  const logo = NETWORK_LOGOS[network]
+  return (
+    <div
+      style={{
+        padding: '4px 7px',
+        borderRadius: 8,
+        background: 'rgba(255,255,255,0.15)',
+        backdropFilter: 'blur(6px)',
+        border: '1px solid rgba(255,255,255,0.18)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}
+    >
+      <Image
+        src={logo.src}
+        alt={network}
+        width={logo.width}
+        height={logo.height}
+        className="object-contain"
+        style={{ display: 'block' }}
+      />
+    </div>
+  )
 }
 
 /* ── EMV Chip ──────────────────────────────────────────────── */
