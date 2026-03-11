@@ -12,126 +12,332 @@ interface CardWidgetProps {
   compact?: boolean
 }
 
+/* ── Network logos ─────────────────────────────────────────── */
+function VisaLogo() {
+  return (
+    <svg width="52" height="18" viewBox="0 0 52 18" fill="none">
+      <text
+        x="0" y="16"
+        fontFamily="Times New Roman, serif"
+        fontWeight="700"
+        fontStyle="italic"
+        fontSize="20"
+        fill="white"
+        opacity="0.92"
+        letterSpacing="-1"
+      >
+        VISA
+      </text>
+    </svg>
+  )
+}
+
+function MastercardLogo() {
+  return (
+    <svg width="38" height="24" viewBox="0 0 38 24" fill="none">
+      <circle cx="14" cy="12" r="12" fill="#EB001B" opacity="0.92" />
+      <circle cx="24" cy="12" r="12" fill="#F79E1B" opacity="0.92" />
+      <path
+        d="M19 4.8a12 12 0 0 1 0 14.4A12 12 0 0 1 19 4.8z"
+        fill="#FF5F00"
+        opacity="0.9"
+      />
+    </svg>
+  )
+}
+
+function AmexLogo() {
+  return (
+    <span
+      style={{
+        fontSize: 9,
+        fontWeight: 700,
+        letterSpacing: '0.18em',
+        color: 'rgba(255,255,255,0.85)',
+        textTransform: 'uppercase',
+        fontFamily: 'system-ui, sans-serif',
+      }}
+    >
+      AMERICAN<br />EXPRESS
+    </span>
+  )
+}
+
 function NetworkLogo({ network }: { network: 'visa' | 'mastercard' | 'amex' | null }) {
-  if (network === 'visa') {
-    return <span className="font-black text-white/90 text-sm italic tracking-tight">VISA</span>
-  }
-  if (network === 'amex') {
-    return <span className="font-bold text-white/90 text-[10px] tracking-[0.2em] uppercase">Amex</span>
-  }
-  if (network === 'mastercard') {
-    return (
-      <div className="flex items-center -space-x-2">
-        <div className="w-5 h-5 rounded-full bg-red-500/90" />
-        <div className="w-5 h-5 rounded-full bg-amber-400/90" />
-      </div>
-    )
-  }
+  if (network === 'visa') return <VisaLogo />
+  if (network === 'mastercard') return <MastercardLogo />
+  if (network === 'amex') return <AmexLogo />
   return null
 }
 
+/* ── EMV Chip ──────────────────────────────────────────────── */
+function Chip({ small = false }: { small?: boolean }) {
+  const w = small ? 28 : 36
+  const h = small ? 22 : 28
+
+  return (
+    <div
+      style={{
+        width: w,
+        height: h,
+        borderRadius: 4,
+        background: 'linear-gradient(145deg, #C8960C 0%, #F5D060 30%, #D4AF37 60%, #E8C84A 100%)',
+        boxShadow: 'inset 0 0 0 0.5px rgba(255,255,255,0.4), 0 1px 3px rgba(0,0,0,0.3)',
+        position: 'relative',
+        overflow: 'hidden',
+        flexShrink: 0,
+      }}
+    >
+      {/* Horizontal groove */}
+      <div style={{
+        position: 'absolute', top: '50%', left: 0, right: 0,
+        height: 1, background: 'rgba(0,0,0,0.18)', transform: 'translateY(-50%)',
+      }} />
+      {/* Vertical groove */}
+      <div style={{
+        position: 'absolute', left: '50%', top: 0, bottom: 0,
+        width: 1, background: 'rgba(0,0,0,0.18)', transform: 'translateX(-50%)',
+      }} />
+      {/* Contact zones */}
+      {[
+        { top: 2, left: 2, right: '52%', bottom: '52%' },
+        { top: 2, left: '52%', right: 2, bottom: '52%' },
+        { top: '52%', left: 2, right: '52%', bottom: 2 },
+        { top: '52%', left: '52%', right: 2, bottom: 2 },
+      ].map((s, i) => (
+        <div key={i} style={{ position: 'absolute', ...s, background: 'rgba(0,0,0,0.07)', borderRadius: 2 }} />
+      ))}
+    </div>
+  )
+}
+
+/* ── Contactless symbol ────────────────────────────────────── */
+function ContactlessIcon({ size = 18 }: { size?: number }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 20 20" fill="none">
+      <circle cx="4" cy="10" r="2" fill="white" opacity="0.65" />
+      <path d="M8 5.5 C10.5 7 12 8.5 12 10 C12 11.5 10.5 13 8 14.5"
+        stroke="white" strokeWidth="1.6" strokeLinecap="round" fill="none" opacity="0.55" />
+      <path d="M11.5 3 C15.5 5.5 17.5 7.5 17.5 10 C17.5 12.5 15.5 14.5 11.5 17"
+        stroke="white" strokeWidth="1.6" strokeLinecap="round" fill="none" opacity="0.35" />
+    </svg>
+  )
+}
+
+/* ── Main widget ───────────────────────────────────────────── */
 export default function CardWidget({ card, currentSpend = 0, compact = false }: CardWidgetProps) {
   const info = getProviderInfo(card.provider)
   const utilization = getUtilizationPercent(card.balance, card.limit_amount)
 
+  const utilizationColor =
+    utilization >= 90 ? 'rgba(255,100,100,0.85)' :
+    utilization >= 70 ? 'rgba(255,180,50,0.85)' :
+    'rgba(255,255,255,0.75)'
+
   return (
     <div
-      className={cn(
-        'relative rounded-[22px] overflow-hidden text-white select-none',
-        `bg-gradient-to-br ${info.gradient}`,
-        compact ? 'p-4' : 'p-6',
-      )}
-      style={{ aspectRatio: '1.586 / 1' }}
+      className={cn('relative overflow-hidden select-none text-white', compact ? 'rounded-2xl p-4' : 'rounded-[24px] p-6')}
+      style={{
+        aspectRatio: '1.586 / 1',
+        background: info.gradient,
+        boxShadow: compact
+          ? 'none'
+          : '0 8px 32px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.18), inset 0 0 0 1px rgba(255,255,255,0.10)',
+      }}
     >
-      {/* Subtle noise texture overlay */}
-      <div className="absolute inset-0 opacity-[0.03]"
+
+      {/* ── Decorative orb — bottom-right ── */}
+      <div
+        aria-hidden
         style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-          backgroundSize: '128px 128px',
+          position: 'absolute',
+          width: '65%', height: '65%',
+          right: '-12%', bottom: '-15%',
+          background: info.accentGradient,
+          filter: 'blur(48px)',
+          pointerEvents: 'none',
         }}
       />
 
-      {/* Glossy highlight */}
-      <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/10 to-transparent rounded-t-[22px]" />
+      {/* ── Top gloss highlight ── */}
+      <div
+        aria-hidden
+        className="absolute top-0 left-0 right-0"
+        style={{
+          height: '45%',
+          background: 'linear-gradient(to bottom, rgba(255,255,255,0.10) 0%, transparent 100%)',
+          borderRadius: compact ? '16px 16px 0 0' : '24px 24px 0 0',
+          pointerEvents: 'none',
+        }}
+      />
 
-      {/* Top row */}
-      <div className="relative flex items-start justify-between">
-        <div className="flex items-center gap-2.5">
-          {card.image_url && (
-            <div className="w-9 h-9 rounded-xl bg-white/20 backdrop-blur-sm flex items-center justify-center overflow-hidden border border-white/20">
-              <Image
-                src={card.image_url}
-                alt={card.provider}
-                width={30}
-                height={30}
-                className="object-contain p-0.5"
-                onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
-              />
-            </div>
-          )}
-          <div>
-            <p className={cn('font-semibold leading-tight tracking-tight', compact ? 'text-xs' : 'text-sm')}>
-              {card.provider}
-            </p>
-            {card.name && card.name !== card.provider && (
-              <p className="text-white/50 text-xs leading-tight mt-0.5">{card.name}</p>
+      {/* ── Diagonal shimmer band ── */}
+      <div
+        aria-hidden
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background: 'linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.04) 50%, transparent 65%)',
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* ── Grain texture ── */}
+      <div
+        aria-hidden
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")`,
+          backgroundSize: '128px 128px',
+          opacity: 0.04,
+          pointerEvents: 'none',
+        }}
+      />
+
+      {/* ── Content ── */}
+      <div className="relative h-full flex flex-col justify-between">
+
+        {/* Row 1 — Provider + Network */}
+        <div className="flex items-start justify-between">
+          <div className="flex items-center gap-2.5">
+            {card.image_url && (
+              <div
+                className="flex items-center justify-center overflow-hidden flex-shrink-0"
+                style={{
+                  width: compact ? 28 : 34,
+                  height: compact ? 28 : 34,
+                  borderRadius: 10,
+                  background: 'rgba(255,255,255,0.18)',
+                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255,255,255,0.22)',
+                }}
+              >
+                <Image
+                  src={card.image_url}
+                  alt={card.provider}
+                  width={compact ? 22 : 26}
+                  height={compact ? 22 : 26}
+                  className="object-contain"
+                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+                />
+              </div>
             )}
-          </div>
-        </div>
-        <NetworkLogo network={info.network} />
-      </div>
-
-      {/* Chip */}
-      {!compact && (
-        <div className="relative mt-5">
-          <div className="w-9 h-[26px] rounded-md bg-gradient-to-br from-yellow-200/80 to-yellow-400/60 border border-yellow-200/40 flex items-center justify-center overflow-hidden">
-            <div className="grid grid-cols-2 gap-px w-full h-full p-0.5">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="rounded-[2px] bg-yellow-300/40" />
-              ))}
+            <div>
+              <p
+                className="font-semibold leading-tight"
+                style={{
+                  fontSize: compact ? 11 : 13,
+                  letterSpacing: '0.02em',
+                  color: 'rgba(255,255,255,0.92)',
+                }}
+              >
+                {card.provider}
+              </p>
+              {card.name && card.name !== card.provider && (
+                <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', marginTop: 2 }}>
+                  {card.name}
+                </p>
+              )}
             </div>
           </div>
+
+          <div className="flex-shrink-0 mt-0.5">
+            <NetworkLogo network={info.network} />
+          </div>
         </div>
-      )}
 
-      {/* Card number */}
-      <div className={cn('relative', compact ? 'mt-3' : 'mt-5')}>
-        <p className={cn('font-mono tracking-[0.2em] text-white/80', compact ? 'text-[10px]' : 'text-xs')}>
-          •••• •••• •••• {card.last_four ?? '••••'}
-        </p>
-      </div>
-
-      {/* Bottom info */}
-      <div className={cn('relative', compact ? 'mt-2' : 'mt-4')}>
-        <div className="flex items-end justify-between mb-2">
+        {/* Row 2 — Chip + Contactless + Card number */}
+        {!compact && (
           <div>
-            <p className="text-white/50 text-[10px] uppercase tracking-wider mb-0.5">Solde</p>
-            <p className={cn('font-semibold tracking-tight', compact ? 'text-sm' : 'text-base')}>
-              {formatCurrency(card.balance)}
-              <span className="text-white/40 font-normal text-[11px] ml-1.5">
-                / {formatCurrency(card.limit_amount)}
-              </span>
+            <div className="flex items-center gap-3 mb-3">
+              <Chip />
+              <ContactlessIcon size={18} />
+            </div>
+            <p
+              className="font-mono"
+              style={{
+                fontSize: 13,
+                letterSpacing: '0.22em',
+                color: 'rgba(255,255,255,0.72)',
+              }}
+            >
+              •••• •••• •••• {card.last_four ?? '••••'}
             </p>
           </div>
-          <div className="text-right">
-            <p className="text-white/50 text-[10px] uppercase tracking-wider mb-0.5">Util.</p>
-            <p className="text-white/80 text-sm font-medium">{utilization}%</p>
-          </div>
-        </div>
+        )}
 
-        {/* Utilization bar */}
-        <div className="w-full h-[3px] bg-white/15 rounded-full overflow-hidden">
-          <div
-            className="h-full bg-white/70 rounded-full"
-            style={{ width: `${utilization}%` }}
-          />
-        </div>
-
-        {currentSpend > 0 && !compact && (
-          <p className="text-white/40 text-[10px] mt-1.5 uppercase tracking-wider">
-            {formatCurrency(currentSpend)} dépensé ce mois
+        {compact && (
+          <p
+            className="font-mono"
+            style={{ fontSize: 10, letterSpacing: '0.18em', color: 'rgba(255,255,255,0.55)' }}
+          >
+            •••• {card.last_four ?? '••••'}
           </p>
         )}
+
+        {/* Row 3 — Balance info + bar */}
+        <div>
+          <div className="flex items-end justify-between mb-2">
+            {/* Balance */}
+            <div>
+              <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3 }}>
+                Solde
+              </p>
+              <p
+                className="font-semibold leading-none"
+                style={{ fontSize: compact ? 14 : 17, letterSpacing: '-0.02em' }}
+              >
+                {formatCurrency(card.balance)}
+              </p>
+              {!compact && (
+                <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.38)', marginTop: 3 }}>
+                  / {formatCurrency(card.limit_amount)}
+                </p>
+              )}
+            </div>
+
+            {/* Utilization */}
+            <div className="text-right">
+              <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.45)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 3 }}>
+                Util.
+              </p>
+              <p
+                className="font-semibold leading-none"
+                style={{ fontSize: compact ? 13 : 16, color: utilizationColor }}
+              >
+                {utilization}%
+              </p>
+            </div>
+          </div>
+
+          {/* Utilization bar */}
+          <div
+            style={{
+              width: '100%',
+              height: compact ? 2 : 3,
+              background: 'rgba(255,255,255,0.12)',
+              borderRadius: 99,
+              overflow: 'hidden',
+            }}
+          >
+            <div
+              style={{
+                height: '100%',
+                width: `${utilization}%`,
+                background: utilizationColor,
+                borderRadius: 99,
+                transition: 'width 0.6s cubic-bezier(0.25,0.46,0.45,0.94)',
+              }}
+            />
+          </div>
+
+          {currentSpend > 0 && !compact && (
+            <p style={{ fontSize: 10, color: 'rgba(255,255,255,0.35)', marginTop: 5, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+              {formatCurrency(currentSpend)} dépensé ce mois
+            </p>
+          )}
+        </div>
+
       </div>
     </div>
   )
