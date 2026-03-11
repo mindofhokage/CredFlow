@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import ThemeProvider from '@/components/ThemeProvider'
 
 export const metadata: Metadata = {
   title: 'CredFlow',
@@ -8,9 +9,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="fr">
-      <body className="min-h-screen bg-[#F4F5F7]">
-        {children}
+    <html lang="fr" suppressHydrationWarning>
+      <body className="min-h-screen bg-[var(--c-bg)]">
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

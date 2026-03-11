@@ -15,10 +15,10 @@ interface AddExpenseModalProps {
 const CATEGORIES = Object.keys(CATEGORY_LABELS) as ExpenseCategory[]
 
 const inputClass = (error?: string) => cn(
-  'w-full px-3.5 py-2.5 text-[14px] text-[#1D1D1F] rounded-xl border bg-[#F5F5F7] focus:bg-white outline-none transition-all duration-200 placeholder:text-[#AEAEB2]',
+  'w-full px-3.5 py-2.5 text-[14px] text-[var(--c-text)] rounded-xl border bg-[var(--c-input-bg)] focus:bg-[var(--c-input-focus)] outline-none transition-all duration-200 placeholder:text-[var(--c-text-3)]',
   error
     ? 'border-red-400 focus:border-red-400 focus:ring-2 focus:ring-red-100'
-    : 'border-black/[0.08] focus:border-black/20 focus:ring-2 focus:ring-black/[0.04]',
+    : 'border-[var(--c-border-md)] focus:border-[var(--c-focus-border)] focus:ring-2 focus:ring-[var(--c-focus-ring)]',
 )
 
 export default function AddExpenseModal({ cardId, onClose, onCreated }: AddExpenseModalProps) {
@@ -60,17 +60,17 @@ export default function AddExpenseModal({ cardId, onClose, onCreated }: AddExpen
     <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-4 sm:p-0">
       <div className="absolute inset-0 bg-black/20 backdrop-blur-sm" onClick={onClose} />
 
-      <div className="relative w-full sm:max-w-md bg-white rounded-t-3xl sm:rounded-3xl overflow-hidden"
+      <div className="relative w-full sm:max-w-md bg-[var(--c-surface)] rounded-t-3xl sm:rounded-3xl overflow-hidden"
         style={{ boxShadow: '0 24px 64px rgba(0,0,0,0.12), 0 8px 24px rgba(0,0,0,0.08)' }}>
 
         <div className="flex justify-center pt-3 pb-1 sm:hidden">
-          <div className="w-9 h-1 bg-[#E5E5EA] rounded-full" />
+          <div className="w-9 h-1 bg-[var(--c-gray-3)] rounded-full" />
         </div>
 
-        <div className="flex items-center justify-between px-6 py-4 border-b border-black/[0.06]">
-          <h2 className="text-[17px] font-semibold tracking-tight text-[#1D1D1F]">Nouvelle dépense</h2>
-          <button onClick={onClose} className="w-7 h-7 bg-[#F5F5F7] hover:bg-[#E5E5EA] rounded-full flex items-center justify-center transition-colors">
-            <X className="w-3.5 h-3.5 text-[#6E6E73]" />
+        <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--c-border)]">
+          <h2 className="text-[17px] font-semibold tracking-tight text-[var(--c-text)]">Nouvelle dépense</h2>
+          <button onClick={onClose} className="w-7 h-7 bg-[var(--c-hover)] hover:bg-[var(--c-hover-sm)] rounded-full flex items-center justify-center transition-colors">
+            <X className="w-3.5 h-3.5 text-[var(--c-text-2)]" />
           </button>
         </div>
 
@@ -78,7 +78,7 @@ export default function AddExpenseModal({ cardId, onClose, onCreated }: AddExpen
 
           {/* Title */}
           <div>
-            <label className="block text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wider mb-2">Titre</label>
+            <label className="block text-[11px] font-semibold text-[var(--c-text-2)] uppercase tracking-wider mb-2">Titre</label>
             <input
               type="text" autoFocus
               value={form.title}
@@ -91,9 +91,9 @@ export default function AddExpenseModal({ cardId, onClose, onCreated }: AddExpen
           {/* Amount + Date */}
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wider mb-2">Montant</label>
+              <label className="block text-[11px] font-semibold text-[var(--c-text-2)] uppercase tracking-wider mb-2">Montant</label>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#AEAEB2] text-[13px]">$</span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--c-text-3)] text-[13px]">$</span>
                 <input
                   type="number" min="0.01" step="0.01"
                   value={form.amount}
@@ -105,7 +105,7 @@ export default function AddExpenseModal({ cardId, onClose, onCreated }: AddExpen
               {errors.amount && <p className="text-[11px] text-red-500 mt-1">{errors.amount}</p>}
             </div>
             <div>
-              <label className="block text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wider mb-2">Date</label>
+              <label className="block text-[11px] font-semibold text-[var(--c-text-2)] uppercase tracking-wider mb-2">Date</label>
               <input
                 type="date"
                 value={form.date}
@@ -117,7 +117,7 @@ export default function AddExpenseModal({ cardId, onClose, onCreated }: AddExpen
 
           {/* Category */}
           <div>
-            <label className="block text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wider mb-2">Catégorie</label>
+            <label className="block text-[11px] font-semibold text-[var(--c-text-2)] uppercase tracking-wider mb-2">Catégorie</label>
             <div className="grid grid-cols-2 gap-1.5">
               {CATEGORIES.map((cat) => (
                 <button
@@ -126,8 +126,8 @@ export default function AddExpenseModal({ cardId, onClose, onCreated }: AddExpen
                   className={cn(
                     'flex items-center gap-2 px-3 py-2 text-[13px] rounded-xl border transition-all duration-150 text-left',
                     form.category === cat
-                      ? 'border-[#1D1D1F] bg-[#1D1D1F] text-white'
-                      : 'border-black/[0.08] bg-[#F5F5F7] text-[#1D1D1F] hover:bg-[#E5E5EA]',
+                      ? 'border-[var(--c-btn)] bg-[var(--c-btn)] text-[var(--c-btn-text)]'
+                      : 'border-[var(--c-border-md)] bg-[var(--c-input-bg)] text-[var(--c-text)] hover:bg-[var(--c-hover-sm)]',
                   )}
                 >
                   <span className="text-base leading-none">{CATEGORY_ICONS[cat]}</span>
@@ -139,8 +139,8 @@ export default function AddExpenseModal({ cardId, onClose, onCreated }: AddExpen
 
           {/* Note */}
           <div>
-            <label className="block text-[11px] font-semibold text-[#6E6E73] uppercase tracking-wider mb-2">
-              Note <span className="normal-case font-normal text-[#AEAEB2]">(optionnel)</span>
+            <label className="block text-[11px] font-semibold text-[var(--c-text-2)] uppercase tracking-wider mb-2">
+              Note <span className="normal-case font-normal text-[var(--c-text-3)]">(optionnel)</span>
             </label>
             <textarea
               value={form.note}
@@ -153,7 +153,7 @@ export default function AddExpenseModal({ cardId, onClose, onCreated }: AddExpen
 
           <div className="pt-2">
             <button type="submit" disabled={loading}
-              className="w-full py-3 bg-[#1D1D1F] hover:bg-[#3A3A3C] text-white text-[15px] font-medium rounded-2xl transition-colors duration-200 disabled:opacity-50 flex items-center justify-center gap-2">
+              className="w-full py-3 bg-[var(--c-btn)] hover:bg-[var(--c-btn-hover)] text-[var(--c-btn-text)] text-[15px] font-medium rounded-2xl transition-colors duration-200 disabled:opacity-50 flex items-center justify-center gap-2">
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
               Ajouter
             </button>

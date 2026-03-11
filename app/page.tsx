@@ -10,6 +10,8 @@ import { Card } from '@/lib/types'
 import { formatCurrency, getUtilizationPercent } from '@/lib/utils'
 import CardWidget from '@/components/CardWidget'
 import AddCardModal from '@/components/AddCardModal'
+import Logo from '@/components/Logo'
+import ThemeToggle from '@/components/ThemeToggle'
 
 export default function DashboardPage() {
   const [cards, setCards] = useState<Card[]>([])
@@ -28,20 +30,23 @@ export default function DashboardPage() {
   const totalUtilization = getUtilizationPercent(totalBalance, totalLimit)
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7]">
+    <div className="min-h-screen bg-[var(--c-bg)]">
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-[#F5F5F7]/75 backdrop-blur-2xl">
+      <header className="sticky top-0 z-20 bg-[var(--c-header-bg)] backdrop-blur-2xl">
         <div className="max-w-5xl mx-auto px-6 h-12 flex items-center justify-between">
-          <span className="text-[15px] font-semibold tracking-tight text-[#1D1D1F]">CredFlow</span>
-          <button
-            onClick={() => setShowAddCard(true)}
-            className="flex items-center gap-1.5 px-4 py-1.5 bg-[#1D1D1F] hover:bg-[#3A3A3C] text-white text-[13px] font-medium rounded-full transition-colors duration-200"
-          >
-            <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
-            Ajouter
-          </button>
+          <Logo />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <button
+              onClick={() => setShowAddCard(true)}
+              className="flex items-center gap-1.5 px-4 py-1.5 bg-[var(--c-btn)] hover:bg-[var(--c-btn-hover)] text-[var(--c-btn-text)] text-[13px] font-medium rounded-full transition-colors duration-200"
+            >
+              <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
+              Ajouter
+            </button>
+          </div>
         </div>
-        <div className="border-b border-black/[0.06]" />
+        <div className="border-b border-[var(--c-border)]" />
       </header>
 
       <main className="max-w-5xl mx-auto px-6 py-10">
@@ -56,16 +61,16 @@ export default function DashboardPage() {
             ].map((stat) => (
               <div
                 key={stat.label}
-                className="bg-white rounded-2xl px-5 py-4 border border-black/[0.06]"
+                className="bg-[var(--c-surface)] rounded-2xl px-5 py-4 border border-[var(--c-border)]"
                 style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03)' }}
               >
-                <p className="text-[11px] font-medium text-[#6E6E73] uppercase tracking-wider mb-1.5">{stat.label}</p>
-                <p className="text-2xl font-bold tracking-tight text-[#1D1D1F]">{stat.value}</p>
-                {stat.sub && <p className="text-[11px] text-[#AEAEB2] mt-0.5">{stat.sub}</p>}
+                <p className="text-[11px] font-medium text-[var(--c-text-2)] uppercase tracking-wider mb-1.5">{stat.label}</p>
+                <p className="text-2xl font-bold tracking-tight text-[var(--c-text)]">{stat.value}</p>
+                {stat.sub && <p className="text-[11px] text-[var(--c-text-3)] mt-0.5">{stat.sub}</p>}
                 {stat.bar && (
-                  <div className="mt-2.5 w-full h-[3px] bg-[#E5E5EA] rounded-full overflow-hidden">
+                  <div className="mt-2.5 w-full h-[3px] bg-[var(--c-gray-3)] rounded-full overflow-hidden">
                     <div
-                      className="h-full bg-[#1D1D1F] rounded-full"
+                      className="h-full bg-[var(--c-progress)] rounded-full"
                       style={{ width: `${totalUtilization}%` }}
                     />
                   </div>
@@ -82,7 +87,7 @@ export default function DashboardPage() {
               <div
                 key={i}
                 className="rounded-[22px] animate-pulse"
-                style={{ aspectRatio: '1.586 / 1', background: 'linear-gradient(135deg, #E5E5EA, #D1D1D6)' }}
+                style={{ aspectRatio: '1.586 / 1', background: 'linear-gradient(135deg, var(--c-gray-3), var(--c-hover-sm))' }}
               />
             ))}
           </div>
@@ -92,21 +97,21 @@ export default function DashboardPage() {
         {!loading && cards.length === 0 && (
           <div className="flex flex-col items-center justify-center py-24 text-center">
             <div
-              className="w-20 h-20 rounded-3xl bg-white flex items-center justify-center mb-6 border border-black/[0.06]"
+              className="w-20 h-20 rounded-3xl bg-[var(--c-surface)] flex items-center justify-center mb-6 border border-[var(--c-border)]"
               style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.06)' }}
             >
-              <svg className="w-9 h-9 text-[#AEAEB2]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <svg className="w-9 h-9 text-[var(--c-text-3)]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                 <rect x="2" y="5" width="20" height="14" rx="3" />
                 <path d="M2 10h20" strokeLinecap="round" />
               </svg>
             </div>
-            <h2 className="text-xl font-semibold tracking-tight text-[#1D1D1F] mb-2">Aucune carte</h2>
-            <p className="text-[#6E6E73] text-[15px] mb-8 max-w-xs leading-relaxed">
+            <h2 className="text-xl font-semibold tracking-tight text-[var(--c-text)] mb-2">Aucune carte</h2>
+            <p className="text-[var(--c-text-2)] text-[15px] mb-8 max-w-xs leading-relaxed">
               Ajoutez votre première carte de crédit pour commencer à suivre vos dépenses.
             </p>
             <button
               onClick={() => setShowAddCard(true)}
-              className="flex items-center gap-2 px-6 py-3 bg-[#1D1D1F] hover:bg-[#3A3A3C] text-white text-[15px] font-medium rounded-full transition-colors duration-200"
+              className="flex items-center gap-2 px-6 py-3 bg-[var(--c-btn)] hover:bg-[var(--c-btn-hover)] text-[var(--c-btn-text)] text-[15px] font-medium rounded-full transition-colors duration-200"
             >
               <Plus className="w-4 h-4" strokeWidth={2.5} />
               Ajouter une carte
@@ -117,7 +122,7 @@ export default function DashboardPage() {
         {/* Cards grid */}
         {!loading && cards.length > 0 && (
           <div>
-            <p className="text-[11px] font-semibold text-[#AEAEB2] uppercase tracking-widest mb-4">
+            <p className="text-[11px] font-semibold text-[var(--c-text-3)] uppercase tracking-widest mb-4">
               Mes cartes
             </p>
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -127,8 +132,8 @@ export default function DashboardPage() {
                     <CardWidget card={card} />
                   </div>
                   <div className="mt-3 px-1 flex items-center justify-between">
-                    <p className="text-[13px] font-medium text-[#1D1D1F] truncate">{card.provider}</p>
-                    <p className="text-[11px] text-[#AEAEB2] flex-shrink-0 ml-2">
+                    <p className="text-[13px] font-medium text-[var(--c-text)] truncate">{card.provider}</p>
+                    <p className="text-[11px] text-[var(--c-text-3)] flex-shrink-0 ml-2">
                       Facture le {card.billing_start_day}
                     </p>
                   </div>

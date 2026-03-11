@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Background -->
+  <rect width="32" height="32" rx="7" fill="#1D1D1F"/>
+  <!-- Card body -->
+  <rect x="4" y="9" width="22" height="14" rx="2.5" fill="white" opacity="0.93"/>
+  <!-- Magnetic band -->
+  <rect x="4" y="13" width="22" height="3.5" fill="#1D1D1F" opacity="0.07"/>
+  <!-- Chip (gold) -->
+  <rect x="6.5" y="10.5" width="5" height="3.5" rx="0.9" fill="#F5C518"/>
+  <line x1="9" y1="10.5" x2="9" y2="14" stroke="#D4A500" stroke-width="0.6"/>
+  <line x1="6.5" y1="12.2" x2="11.5" y2="12.2" stroke="#D4A500" stroke-width="0.6"/>
+  <!-- Flow arrow (indigo) -->
+  <path d="M6.5 20.5 H17.5" stroke="#818CF8" stroke-width="2" stroke-linecap="round"/>
+  <path d="M14.5 18 L17.8 20.5 L14.5 23" stroke="#818CF8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

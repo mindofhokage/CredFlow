@@ -58,7 +58,7 @@ export default function ExpenseList({ expenses, onDeleted, onCardUpdated, filter
     return (
       <div className="text-center py-14">
         <p className="text-4xl mb-3">🧾</p>
-        <p className="text-[14px] text-[#AEAEB2]">Aucune dépense</p>
+        <p className="text-[14px] text-[var(--c-text-3)]">Aucune dépense</p>
       </div>
     )
   }
@@ -73,14 +73,14 @@ export default function ExpenseList({ expenses, onDeleted, onCardUpdated, filter
           <div key={date}>
             {/* Date header */}
             <div className="flex items-center justify-between mb-2 px-0.5">
-              <span className="text-[11px] font-semibold text-[#AEAEB2] uppercase tracking-wider">
+              <span className="text-[11px] font-semibold text-[var(--c-text-3)] uppercase tracking-wider">
                 {formatDateShort(date)}
               </span>
-              <span className="text-[11px] text-[#AEAEB2]">{formatCurrency(dayTotal)}</span>
+              <span className="text-[11px] text-[var(--c-text-3)]">{formatCurrency(dayTotal)}</span>
             </div>
 
             {/* Expense items — grouped card */}
-            <div className="bg-white rounded-2xl border border-black/[0.06] overflow-hidden divide-y divide-black/[0.04]"
+            <div className="bg-[var(--c-surface)] rounded-2xl border border-[var(--c-border)] overflow-hidden divide-themed"
               style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.03)' }}>
               {dayExpenses.map((expense) => (
                 <div key={expense.id}>
@@ -102,28 +102,28 @@ export default function ExpenseList({ expenses, onDeleted, onCardUpdated, filter
                     </button>
 
                     {/* Category icon pill */}
-                    <div className="w-8 h-8 rounded-xl bg-[#F5F5F7] flex items-center justify-center flex-shrink-0 text-base leading-none">
+                    <div className="w-8 h-8 rounded-xl bg-[var(--c-hover)] flex items-center justify-center flex-shrink-0 text-base leading-none">
                       {CATEGORY_ICONS[expense.category as ExpenseCategory]}
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <p className={cn('text-[14px] font-medium text-[#1D1D1F] truncate leading-snug', paidIds[expense.id] && 'line-through')}>
+                      <p className={cn('text-[14px] font-medium text-[var(--c-text)] truncate leading-snug', paidIds[expense.id] && 'line-through')}>
                         {expense.title}
                       </p>
-                      <p className="text-[11px] text-[#AEAEB2] mt-0.5">
+                      <p className="text-[11px] text-[var(--c-text-3)] mt-0.5">
                         {CATEGORY_LABELS[expense.category as ExpenseCategory]}
                       </p>
                     </div>
 
                     <div className="flex items-center gap-2">
-                      <span className="text-[14px] font-semibold text-[#1D1D1F]">
+                      <span className="text-[14px] font-semibold text-[var(--c-text)]">
                         {formatCurrency(expense.amount)}
                       </span>
 
                       {expense.note && (
                         <button
                           onClick={() => setExpandedId(expandedId === expense.id ? null : expense.id)}
-                          className="p-1 text-[#AEAEB2] hover:text-[#6E6E73] transition-colors"
+                          className="p-1 text-[var(--c-text-3)] hover:text-[var(--c-text-2)] transition-colors"
                         >
                           {expandedId === expense.id
                             ? <ChevronUp className="w-3.5 h-3.5" />
@@ -137,7 +137,7 @@ export default function ExpenseList({ expenses, onDeleted, onCardUpdated, filter
                         disabled={deletingId === expense.id}
                         className={cn(
                           'p-1 rounded-lg transition-colors',
-                          deletingId === expense.id ? 'opacity-30' : 'text-[#AEAEB2] hover:text-red-400',
+                          deletingId === expense.id ? 'opacity-30' : 'text-[var(--c-text-3)] hover:text-red-400',
                         )}
                       >
                         <Trash2 className="w-3.5 h-3.5" />
@@ -147,7 +147,7 @@ export default function ExpenseList({ expenses, onDeleted, onCardUpdated, filter
 
                   {expandedId === expense.id && expense.note && (
                     <div className="px-4 pb-3.5 ml-11">
-                      <p className="text-[12px] text-[#6E6E73] leading-relaxed bg-[#F5F5F7] rounded-xl px-3 py-2">
+                      <p className="text-[12px] text-[var(--c-text-2)] leading-relaxed bg-[var(--c-hover)] rounded-xl px-3 py-2">
                         {expense.note}
                       </p>
                     </div>
@@ -184,8 +184,8 @@ export function CategoryFilter({ expenses, selected, onChange }: CategoryFilterP
         className={cn(
           'flex-shrink-0 px-3.5 py-1.5 text-[12px] font-medium rounded-full transition-all duration-200',
           selected === 'all'
-            ? 'bg-[#1D1D1F] text-white'
-            : 'bg-white border border-black/[0.08] text-[#6E6E73] hover:text-[#1D1D1F]',
+            ? 'bg-[var(--c-btn)] text-[var(--c-btn-text)]'
+            : 'bg-[var(--c-surface)] border border-[var(--c-border-md)] text-[var(--c-text-2)] hover:text-[var(--c-text)]',
         )}
       >
         Tout
@@ -197,8 +197,8 @@ export function CategoryFilter({ expenses, selected, onChange }: CategoryFilterP
           className={cn(
             'flex-shrink-0 px-3.5 py-1.5 text-[12px] font-medium rounded-full transition-all duration-200 flex items-center gap-1.5',
             selected === cat
-              ? 'bg-[#1D1D1F] text-white'
-              : 'bg-white border border-black/[0.08] text-[#6E6E73] hover:text-[#1D1D1F]',
+              ? 'bg-[var(--c-btn)] text-[var(--c-btn-text)]'
+              : 'bg-[var(--c-surface)] border border-[var(--c-border-md)] text-[var(--c-text-2)] hover:text-[var(--c-text)]',
           )}
         >
           <span>{CATEGORY_ICONS[cat]}</span>

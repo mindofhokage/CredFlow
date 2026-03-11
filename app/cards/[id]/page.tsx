@@ -17,6 +17,7 @@ import CardWidget from '@/components/CardWidget'
 import AddExpenseModal from '@/components/AddExpenseModal'
 import EditCardModal from '@/components/EditCardModal'
 import ExpenseList, { CategoryFilter } from '@/components/ExpenseList'
+import Logo from '@/components/Logo'
 
 export default function CardDetailPage() {
   const params = useParams()
@@ -40,18 +41,18 @@ export default function CardDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#F5F5F7] flex items-center justify-center">
-        <div className="w-6 h-6 border-[1.5px] border-[#1D1D1F] border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-[var(--c-bg)] flex items-center justify-center">
+        <div className="w-6 h-6 border-[1.5px] border-[var(--c-text)] border-t-transparent rounded-full animate-spin" />
       </div>
     )
   }
 
   if (!card) {
     return (
-      <div className="min-h-screen bg-[#F5F5F7] flex items-center justify-center">
+      <div className="min-h-screen bg-[var(--c-bg)] flex items-center justify-center">
         <div className="text-center">
-          <p className="text-[#6E6E73] text-[15px]">Carte introuvable</p>
-          <button onClick={() => router.push('/')} className="mt-3 text-[#1D1D1F] text-[13px] font-medium hover:opacity-60 transition-opacity">
+          <p className="text-[var(--c-text-2)] text-[15px]">Carte introuvable</p>
+          <button onClick={() => router.push('/')} className="mt-3 text-[var(--c-text)] text-[13px] font-medium hover:opacity-60 transition-opacity">
             ← Retour
           </button>
         </div>
@@ -80,25 +81,25 @@ export default function CardDetailPage() {
   const cardStyle = { boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03)' }
 
   return (
-    <div className="min-h-screen bg-[#F5F5F7]">
+    <div className="min-h-screen bg-[var(--c-bg)]">
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-[#F5F5F7]/75 backdrop-blur-2xl">
+      <header className="sticky top-0 z-20 bg-[var(--c-header-bg)] backdrop-blur-2xl">
         <div className="max-w-2xl mx-auto px-6 h-12 flex items-center justify-between">
           <button
             onClick={() => router.push('/')}
-            className="flex items-center gap-0.5 text-[#1D1D1F] hover:opacity-60 transition-opacity"
+            className="flex items-center gap-0.5 text-[var(--c-text)] hover:opacity-60 transition-opacity"
           >
             <ChevronLeft className="w-4 h-4" strokeWidth={2.5} />
-            <span className="text-[15px] font-medium">CredFlow</span>
+            <Logo size="sm" />
           </button>
           <button
             onClick={() => setShowEditCard(true)}
-            className="p-2 hover:bg-black/5 rounded-full transition-colors"
+            className="p-2 hover:bg-[var(--c-hover-icon)] rounded-full transition-colors"
           >
-            <SlidersHorizontal className="w-4 h-4 text-[#6E6E73]" />
+            <SlidersHorizontal className="w-4 h-4 text-[var(--c-text-2)]" />
           </button>
         </div>
-        <div className="border-b border-black/[0.06]" />
+        <div className="border-b border-[var(--c-border)]" />
       </header>
 
       <main className="max-w-2xl mx-auto px-6 py-8 space-y-4">
@@ -108,56 +109,56 @@ export default function CardDetailPage() {
 
         {/* Stats row */}
         <div className="grid grid-cols-2 gap-3">
-          <div className="bg-white rounded-2xl px-5 py-4 border border-black/[0.06]" style={cardStyle}>
-            <p className="text-[11px] font-medium text-[#6E6E73] uppercase tracking-wider mb-1.5">Ce mois</p>
-            <p className="text-xl font-bold tracking-tight text-[#1D1D1F]">{formatCurrency(currentSpend)}</p>
-            <p className="text-[11px] text-[#AEAEB2] mt-0.5">
+          <div className="bg-[var(--c-surface)] rounded-2xl px-5 py-4 border border-[var(--c-border)]" style={cardStyle}>
+            <p className="text-[11px] font-medium text-[var(--c-text-2)] uppercase tracking-wider mb-1.5">Ce mois</p>
+            <p className="text-xl font-bold tracking-tight text-[var(--c-text)]">{formatCurrency(currentSpend)}</p>
+            <p className="text-[11px] text-[var(--c-text-3)] mt-0.5">
               {currentPeriodExpenses.length} transaction{currentPeriodExpenses.length !== 1 ? 's' : ''}
             </p>
           </div>
 
-          <div className="bg-white rounded-2xl px-5 py-4 border border-black/[0.06]" style={cardStyle}>
-            <p className="text-[11px] font-medium text-[#6E6E73] uppercase tracking-wider mb-1.5">Utilisation</p>
-            <p className="text-xl font-bold tracking-tight text-[#1D1D1F]">{utilization}%</p>
-            <div className="mt-2.5 w-full h-[3px] bg-[#E5E5EA] rounded-full overflow-hidden">
-              <div className="h-full bg-[#1D1D1F] rounded-full" style={{ width: `${utilization}%` }} />
+          <div className="bg-[var(--c-surface)] rounded-2xl px-5 py-4 border border-[var(--c-border)]" style={cardStyle}>
+            <p className="text-[11px] font-medium text-[var(--c-text-2)] uppercase tracking-wider mb-1.5">Utilisation</p>
+            <p className="text-xl font-bold tracking-tight text-[var(--c-text)]">{utilization}%</p>
+            <div className="mt-2.5 w-full h-[3px] bg-[var(--c-gray-3)] rounded-full overflow-hidden">
+              <div className="h-full bg-[var(--c-progress)] rounded-full" style={{ width: `${utilization}%` }} />
             </div>
           </div>
         </div>
 
         {/* Billing period */}
-        <div className="bg-white rounded-2xl px-5 py-4 border border-black/[0.06]" style={cardStyle}>
+        <div className="bg-[var(--c-surface)] rounded-2xl px-5 py-4 border border-[var(--c-border)]" style={cardStyle}>
           <div className="flex items-center justify-between mb-3">
-            <p className="text-[11px] font-medium text-[#6E6E73] uppercase tracking-wider">Période de facturation</p>
-            <p className="text-[11px] text-[#AEAEB2]">{periodPct}% écoulé</p>
+            <p className="text-[11px] font-medium text-[var(--c-text-2)] uppercase tracking-wider">Période de facturation</p>
+            <p className="text-[11px] text-[var(--c-text-3)]">{periodPct}% écoulé</p>
           </div>
-          <p className="text-[15px] font-semibold tracking-tight text-[#1D1D1F]">{periodLabel}</p>
-          <div className="mt-3 w-full h-[3px] bg-[#E5E5EA] rounded-full overflow-hidden">
-            <div className="h-full bg-[#1D1D1F] rounded-full transition-all" style={{ width: `${periodPct}%` }} />
+          <p className="text-[15px] font-semibold tracking-tight text-[var(--c-text)]">{periodLabel}</p>
+          <div className="mt-3 w-full h-[3px] bg-[var(--c-gray-3)] rounded-full overflow-hidden">
+            <div className="h-full bg-[var(--c-progress)] rounded-full transition-all" style={{ width: `${periodPct}%` }} />
           </div>
         </div>
 
         {/* Category breakdown */}
         {topCategories.length > 0 && (
-          <div className="bg-white rounded-2xl px-5 py-4 border border-black/[0.06]" style={cardStyle}>
-            <p className="text-[11px] font-medium text-[#6E6E73] uppercase tracking-wider mb-4">Par catégorie</p>
+          <div className="bg-[var(--c-surface)] rounded-2xl px-5 py-4 border border-[var(--c-border)]" style={cardStyle}>
+            <p className="text-[11px] font-medium text-[var(--c-text-2)] uppercase tracking-wider mb-4">Par catégorie</p>
             <div className="space-y-3.5">
               {topCategories.map(([cat, amount]) => {
                 const pct = Math.round((amount / currentSpend) * 100)
                 return (
                   <div key={cat}>
                     <div className="flex items-center justify-between mb-1.5">
-                      <span className="text-[13px] text-[#1D1D1F]">
+                      <span className="text-[13px] text-[var(--c-text)]">
                         {CATEGORY_ICONS[cat as ExpenseCategory]}{' '}
                         {CATEGORY_LABELS[cat as ExpenseCategory]}
                       </span>
-                      <span className="text-[13px] text-[#1D1D1F] font-medium">
+                      <span className="text-[13px] text-[var(--c-text)] font-medium">
                         {formatCurrency(amount)}
-                        <span className="text-[#AEAEB2] font-normal ml-1.5">{pct}%</span>
+                        <span className="text-[var(--c-text-3)] font-normal ml-1.5">{pct}%</span>
                       </span>
                     </div>
-                    <div className="w-full h-[3px] bg-[#E5E5EA] rounded-full overflow-hidden">
-                      <div className="h-full bg-[#1D1D1F] rounded-full" style={{ width: `${pct}%` }} />
+                    <div className="w-full h-[3px] bg-[var(--c-gray-3)] rounded-full overflow-hidden">
+                      <div className="h-full bg-[var(--c-progress)] rounded-full" style={{ width: `${pct}%` }} />
                     </div>
                   </div>
                 )
@@ -170,15 +171,15 @@ export default function CardDetailPage() {
         <div>
           {/* Tab bar + add button */}
           <div className="flex items-center justify-between mb-4">
-            <div className="flex gap-0.5 bg-white border border-black/[0.06] rounded-full p-1" style={cardStyle}>
+            <div className="flex gap-0.5 bg-[var(--c-surface)] border border-[var(--c-border)] rounded-full p-1" style={cardStyle}>
               {(['current', 'all'] as const).map((t) => (
                 <button
                   key={t}
                   onClick={() => setTab(t)}
                   className={`px-3.5 py-1 text-[12px] font-medium rounded-full transition-all duration-200 ${
                     tab === t
-                      ? 'bg-[#1D1D1F] text-white shadow-sm'
-                      : 'text-[#6E6E73] hover:text-[#1D1D1F]'
+                      ? 'bg-[var(--c-btn)] text-[var(--c-btn-text)] shadow-sm'
+                      : 'text-[var(--c-text-2)] hover:text-[var(--c-text)]'
                   }`}
                 >
                   {t === 'current' ? `Ce mois` : 'Tout'}
@@ -191,7 +192,7 @@ export default function CardDetailPage() {
 
             <button
               onClick={() => setShowAddExpense(true)}
-              className="flex items-center gap-1.5 px-4 py-1.5 bg-[#1D1D1F] hover:bg-[#3A3A3C] text-white text-[12px] font-medium rounded-full transition-colors duration-200"
+              className="flex items-center gap-1.5 px-4 py-1.5 bg-[var(--c-btn)] hover:bg-[var(--c-btn-hover)] text-[var(--c-btn-text)] text-[12px] font-medium rounded-full transition-colors duration-200"
             >
               <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
               Ajouter
