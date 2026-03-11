@@ -81,7 +81,7 @@ export default function CardDetailPage() {
   const cardStyle = { boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03)' }
 
   return (
-    <div className="min-h-screen bg-[var(--c-bg)]">
+    <div className="min-h-screen">
       {/* Header */}
       <header className="sticky top-0 z-20 bg-[var(--c-header-bg)] backdrop-blur-2xl">
         <div className="max-w-2xl mx-auto px-6 h-12 flex items-center justify-between">

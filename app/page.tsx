@@ -30,7 +30,7 @@ export default function DashboardPage() {
   const totalUtilization = getUtilizationPercent(totalBalance, totalLimit)
 
   return (
-    <div className="min-h-screen bg-[var(--c-bg)]">
+    <div className="min-h-screen">
       {/* Header */}
       <header className="sticky top-0 z-20 bg-[var(--c-header-bg)] backdrop-blur-2xl">
         <div className="max-w-5xl mx-auto px-6 h-12 flex items-center justify-between">

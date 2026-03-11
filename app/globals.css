@@ -6,8 +6,8 @@
   --c-surface: #FFFFFF;
   --c-input-bg: #F5F5F7;
   --c-input-focus: #FFFFFF;
-  --c-header-bg: rgba(245, 245, 247, 0.75);
-  --c-hover: #F5F5F7;
+  --c-header-bg: rgba(245, 245, 247, 0.72);
+  --c-hover: #F0F0F5;
   --c-hover-sm: #E5E5EA;
   --c-hover-icon: rgba(0, 0, 0, 0.05);
 
@@ -31,15 +31,20 @@
   --c-btn: #1D1D1F;
   --c-btn-hover: #3A3A3C;
   --c-btn-text: #FFFFFF;
+
+  /* Background glow colors */
+  --c-glow-1: rgba(99, 102, 241, 0.08);
+  --c-glow-2: rgba(139, 92, 246, 0.05);
+  --c-glow-3: rgba(79, 70, 229, 0.04);
 }
 
 .dark {
   /* Surfaces */
-  --c-bg: #0A0A0B;
+  --c-bg: #08080A;
   --c-surface: #1C1C1E;
   --c-input-bg: #2C2C2E;
   --c-input-focus: #3A3A3C;
-  --c-header-bg: rgba(10, 10, 11, 0.75);
+  --c-header-bg: rgba(8, 8, 10, 0.72);
   --c-hover: #2C2C2E;
   --c-hover-sm: #3A3A3C;
   --c-hover-icon: rgba(255, 255, 255, 0.08);
@@ -64,19 +69,43 @@
   --c-btn: #F5F5F7;
   --c-btn-hover: #E5E5EA;
   --c-btn-text: #1D1D1F;
+
+  /* Background glow colors — stronger in dark */
+  --c-glow-1: rgba(99, 102, 241, 0.28);
+  --c-glow-2: rgba(139, 92, 246, 0.16);
+  --c-glow-3: rgba(167, 139, 250, 0.08);
 }
 
 * {
   box-sizing: border-box;
 }
 
+/* Premium background — fixed so it doesn't scroll */
 html {
+  background-color: var(--c-bg);
+  background-image:
+    radial-gradient(ellipse 150% 70% at 50% -10%, var(--c-glow-1) 0%, transparent 60%),
+    radial-gradient(ellipse 80%  60% at 95%  -5%, var(--c-glow-2) 0%, transparent 50%),
+    radial-gradient(ellipse 60%  50% at  5%  30%, var(--c-glow-3) 0%, transparent 55%);
+  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Subtle grain texture for depth */
+html::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 256px 256px;
+  opacity: 0.025;
+}
+
 body {
-  background: var(--c-bg);
+  background: transparent;
   color: var(--c-text);
   font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', Arial, sans-serif;
 }
@@ -95,7 +124,7 @@ body {
   border-top-color: var(--c-divide);
 }
 
-/* Smooth page transitions */
+/* Smooth transitions */
 * {
   transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
