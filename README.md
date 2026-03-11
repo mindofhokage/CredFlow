@@ -1,36 +1,110 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CredFlow
 
-## Getting Started
+Application web minimaliste pour gérer vos cartes de crédit et suivre vos dépenses par période de facturation.
 
-First, run the development server:
+---
+
+## Prérequis
+
+- [Node.js](https://nodejs.org) v18 ou plus récent
+- npm (inclus avec Node.js)
+
+---
+
+## Lancer en mode démo (localStorage)
+
+Aucune configuration requise. Les données sont stockées dans le navigateur.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# 1. Installer les dépendances
+npm install
+
+# 2. Lancer le serveur de développement
+node node_modules/next/dist/bin/next dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Ouvrir **http://localhost:3000** dans le navigateur.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Lancer avec Supabase (données persistantes)
 
-## Learn More
+### 1. Créer un projet Supabase
 
-To learn more about Next.js, take a look at the following resources:
+1. Aller sur [supabase.com](https://supabase.com) et créer un compte
+2. Créer un nouveau projet
+3. Dans **Settings → API**, copier :
+   - `Project URL`
+   - `anon public` key
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 2. Créer les tables
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Dans **SQL Editor** de Supabase, exécuter le contenu du fichier :
 
-## Deploy on Vercel
+```
+supabase/schema.sql
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 3. Configurer les variables d'environnement
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Créer un fichier `.env.local` à la racine du projet :
+
+```
+NEXT_PUBLIC_SUPABASE_URL=https://votre-projet.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=votre-clé-anon
+```
+
+### 4. Activer Supabase dans le code
+
+Dans `lib/supabase.ts`, remplacer le contenu par celui de `lib/supabase.example.ts` *(à venir)*, ou remplacer le stockage localStorage par le client Supabase fourni.
+
+### 5. Lancer le serveur
+
+```bash
+npm install
+node node_modules/next/dist/bin/next dev
+```
+
+Ouvrir **http://localhost:3000**.
+
+---
+
+## Structure du projet
+
+```
+app/
+├── page.tsx              # Dashboard — liste des cartes
+├── cards/[id]/page.tsx   # Détail d'une carte + dépenses
+└── api/card-image/       # API route — logo via Clearbit
+
+components/
+├── CardWidget.tsx         # Widget visuel carte de crédit
+├── AddCardModal.tsx       # Modal ajout de carte
+├── EditCardModal.tsx      # Modal modification / suppression
+├── AddExpenseModal.tsx    # Modal ajout de dépense
+├── ExpenseList.tsx        # Liste des dépenses + filtres
+└── CategoryBadge.tsx      # Badge de catégorie
+
+lib/
+├── types.ts              # Types TypeScript (Card, Expense…)
+├── supabase.ts           # Couche de données (localStorage ou Supabase)
+├── cardProviders.ts      # Mapping fournisseurs → logos et couleurs
+└── utils.ts              # Utilitaires (dates, devises, période…)
+
+supabase/
+└── schema.sql            # Schema SQL à exécuter dans Supabase
+```
+
+---
+
+## Fonctionnalités
+
+- Ajout et gestion de plusieurs cartes de crédit
+- Logo automatique via l'API Clearbit selon le fournisseur
+- Suivi du solde et du taux d'utilisation par carte
+- Période de facturation configurable (ex. : du 13 au 13)
+- Ajout de dépenses avec titre, montant, date, note et catégorie
+- Regroupement des dépenses par date
+- Filtres par catégorie
+- Statistiques par catégorie pour la période en cours
+- Design Apple-inspired — épuré, blanc/noir, responsive
