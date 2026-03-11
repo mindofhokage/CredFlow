@@ -131,6 +131,8 @@ function ContactlessIcon({ size = 18 }: { size?: number }) {
 /* ── Main widget ───────────────────────────────────────────── */
 export default function CardWidget({ card, currentSpend = 0, compact = false }: CardWidgetProps) {
   const info = getProviderInfo(card.provider)
+  // card.network wins (user-set), fallback to auto-detected from provider name
+  const network = card.network ?? info.network
   const utilization = getUtilizationPercent(card.balance, card.limit_amount)
 
   const utilizationColor =
@@ -246,7 +248,7 @@ export default function CardWidget({ card, currentSpend = 0, compact = false }: 
           </div>
 
           <div className="flex-shrink-0 mt-0.5">
-            <NetworkLogo network={info.network} />
+            <NetworkLogo network={network} />
           </div>
         </div>
 

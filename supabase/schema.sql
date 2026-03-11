@@ -32,6 +32,9 @@ CREATE TABLE IF NOT EXISTS expenses (
 -- Migration: add is_paid column
 ALTER TABLE expenses ADD COLUMN IF NOT EXISTS is_paid BOOLEAN NOT NULL DEFAULT FALSE;
 
+-- Migration: add network column
+ALTER TABLE cards ADD COLUMN IF NOT EXISTS network TEXT CHECK (network IN ('visa', 'mastercard', 'amex')) DEFAULT NULL;
+
 -- Indexes
 CREATE INDEX IF NOT EXISTS expenses_card_id_idx ON expenses(card_id);
 CREATE INDEX IF NOT EXISTS expenses_date_idx ON expenses(date);

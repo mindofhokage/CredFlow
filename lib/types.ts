@@ -10,6 +10,8 @@ export type ExpenseCategory =
   | 'services'
   | 'autre'
 
+export type CardNetwork = 'visa' | 'mastercard' | 'amex' | null
+
 export interface Card {
   id: string
   provider: string
@@ -20,6 +22,7 @@ export interface Card {
   image_url: string | null
   last_four: string | null
   color: string | null
+  network: CardNetwork
   created_at: string
 }
 
