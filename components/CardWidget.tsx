@@ -48,18 +48,22 @@ function MastercardLogo() {
 
 function AmexLogo() {
   return (
-    <span
-      style={{
-        fontSize: 9,
-        fontWeight: 700,
-        letterSpacing: '0.18em',
-        color: 'rgba(255,255,255,0.85)',
-        textTransform: 'uppercase',
-        fontFamily: 'system-ui, sans-serif',
-      }}
-    >
-      AMERICAN<br />EXPRESS
-    </span>
+    <svg width="44" height="18" viewBox="0 0 44 18" fill="none">
+      {/* Blue background pill */}
+      <rect width="44" height="18" rx="4" fill="rgba(0,100,220,0.55)" />
+      <text
+        x="22" y="13"
+        textAnchor="middle"
+        fontFamily="system-ui, -apple-system, sans-serif"
+        fontWeight="800"
+        fontSize="9.5"
+        letterSpacing="0.12em"
+        fill="white"
+        opacity="0.95"
+      >
+        AMEX
+      </text>
+    </svg>
   )
 }
 
