@@ -38,3 +38,28 @@ ALTER TABLE cards ADD COLUMN IF NOT EXISTS network TEXT CHECK (network IN ('visa
 -- Indexes
 CREATE INDEX IF NOT EXISTS expenses_card_id_idx ON expenses(card_id);
 CREATE INDEX IF NOT EXISTS expenses_date_idx ON expenses(date);
+
+-- ── Auth & Row Level Security ─────────────────────────────────────────────────
+
+-- Migration: add user_id to cards (links each card to a Supabase auth user)
+ALTER TABLE cards ADD COLUMN IF NOT EXISTS user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE;
+
+-- Enable RLS
+ALTER TABLE cards ENABLE ROW LEVEL SECURITY;
+ALTER TABLE expenses ENABLE ROW LEVEL SECURITY;
+
+-- Cards policies: users can only see/modify their own cards
+CREATE POLICY IF NOT EXISTS "cards_select_own" ON cards FOR SELECT USING (auth.uid() = user_id);
+CREATE POLICY IF NOT EXISTS "cards_insert_own" ON cards FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY IF NOT EXISTS "cards_update_own" ON cards FOR UPDATE USING (auth.uid() = user_id);
+CREATE POLICY IF NOT EXISTS "cards_delete_own" ON cards FOR DELETE USING (auth.uid() = user_id);
+
+-- Expenses policies: access via card ownership
+CREATE POLICY IF NOT EXISTS "expenses_select_own" ON expenses FOR SELECT
+  USING (card_id IN (SELECT id FROM cards WHERE user_id = auth.uid()));
+CREATE POLICY IF NOT EXISTS "expenses_insert_own" ON expenses FOR INSERT
+  WITH CHECK (card_id IN (SELECT id FROM cards WHERE user_id = auth.uid()));
+CREATE POLICY IF NOT EXISTS "expenses_update_own" ON expenses FOR UPDATE
+  USING (card_id IN (SELECT id FROM cards WHERE user_id = auth.uid()));
+CREATE POLICY IF NOT EXISTS "expenses_delete_own" ON expenses FOR DELETE
+  USING (card_id IN (SELECT id FROM cards WHERE user_id = auth.uid()));

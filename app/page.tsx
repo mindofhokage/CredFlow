@@ -4,7 +4,7 @@ export const dynamic = 'force-dynamic'
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { Plus } from 'lucide-react'
+import { Plus, UserCircle } from 'lucide-react'
 import { getCards } from '@/lib/supabase'
 import { Card } from '@/lib/types'
 import { formatCurrency, getUtilizationPercent } from '@/lib/utils'
@@ -12,6 +12,7 @@ import CardWidget from '@/components/CardWidget'
 import AddCardModal from '@/components/AddCardModal'
 import Logo from '@/components/Logo'
 import ThemeToggle from '@/components/ThemeToggle'
+import GlowBg from '@/components/GlowBg'
 
 export default function DashboardPage() {
   const [cards, setCards] = useState<Card[]>([])
@@ -30,16 +31,25 @@ export default function DashboardPage() {
   const totalUtilization = getUtilizationPercent(totalBalance, totalLimit)
 
   return (
-    <div className="min-h-screen">
+    <div className="relative min-h-screen overflow-hidden">
+      <GlowBg />
+
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-[var(--c-header-bg)] backdrop-blur-2xl">
-        <div className="max-w-5xl mx-auto px-6 h-12 flex items-center justify-between">
-          <Logo />
+      <header className="relative z-20 sticky top-0 bg-[var(--c-header-bg)] backdrop-blur-2xl">
+        <div className="max-w-5xl mx-auto px-6 h-14 flex items-center justify-between">
+          <Logo size="lg" />
           <div className="flex items-center gap-2">
             <ThemeToggle />
+            <Link
+              href="/profile"
+              className="w-8 h-8 flex items-center justify-center rounded-full text-[var(--c-text-2)] hover:text-[var(--c-text)] hover:bg-[var(--c-hover-icon)] transition-colors"
+            >
+              <UserCircle className="w-5 h-5" />
+            </Link>
             <button
               onClick={() => setShowAddCard(true)}
-              className="flex items-center gap-1.5 px-4 py-1.5 bg-[var(--c-btn)] hover:bg-[var(--c-btn-hover)] text-[var(--c-btn-text)] text-[13px] font-medium rounded-full transition-colors duration-200"
+              className="flex items-center gap-1.5 px-4 py-1.5 text-[13px] font-semibold rounded-full transition-all duration-200 text-white"
+              style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', boxShadow: '0 2px 10px rgba(99,102,241,0.30)' }}
             >
               <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
               Ajouter
@@ -49,7 +59,7 @@ export default function DashboardPage() {
         <div className="border-b border-[var(--c-border)]" />
       </header>
 
-      <main className="max-w-5xl mx-auto px-6 py-10">
+      <main className="relative z-10 max-w-5xl mx-auto px-6 py-10">
 
         {/* Summary stats */}
         {cards.length > 0 && (

@@ -18,6 +18,7 @@ import AddExpenseModal from '@/components/AddExpenseModal'
 import EditCardModal from '@/components/EditCardModal'
 import ExpenseList, { CategoryFilter } from '@/components/ExpenseList'
 import Logo from '@/components/Logo'
+import GlowBg from '@/components/GlowBg'
 
 export default function CardDetailPage() {
   const params = useParams()
@@ -81,16 +82,18 @@ export default function CardDetailPage() {
   const cardStyle = { boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03)' }
 
   return (
-    <div className="min-h-screen">
+    <div className="relative min-h-screen overflow-hidden">
+      <GlowBg />
+
       {/* Header */}
-      <header className="sticky top-0 z-20 bg-[var(--c-header-bg)] backdrop-blur-2xl">
-        <div className="max-w-2xl mx-auto px-6 h-12 flex items-center justify-between">
+      <header className="relative z-20 sticky top-0 bg-[var(--c-header-bg)] backdrop-blur-2xl">
+        <div className="max-w-2xl mx-auto px-6 h-14 flex items-center justify-between">
           <button
             onClick={() => router.push('/')}
-            className="flex items-center gap-0.5 text-[var(--c-text)] hover:opacity-60 transition-opacity"
+            className="flex items-center gap-1 text-[var(--c-text)] hover:opacity-60 transition-opacity"
           >
             <ChevronLeft className="w-4 h-4" strokeWidth={2.5} />
-            <Logo size="sm" />
+            <Logo size="lg" />
           </button>
           <button
             onClick={() => setShowEditCard(true)}
@@ -102,7 +105,7 @@ export default function CardDetailPage() {
         <div className="border-b border-[var(--c-border)]" />
       </header>
 
-      <main className="max-w-2xl mx-auto px-6 py-8 space-y-4">
+      <main className="relative z-10 max-w-2xl mx-auto px-6 py-8 space-y-4">
 
         {/* Card */}
         <CardWidget card={card} currentSpend={currentSpend} />
@@ -192,7 +195,8 @@ export default function CardDetailPage() {
 
             <button
               onClick={() => setShowAddExpense(true)}
-              className="flex items-center gap-1.5 px-4 py-1.5 bg-[var(--c-btn)] hover:bg-[var(--c-btn-hover)] text-[var(--c-btn-text)] text-[12px] font-medium rounded-full transition-colors duration-200"
+              className="flex items-center gap-1.5 px-4 py-1.5 text-[12px] font-semibold rounded-full transition-all duration-200 text-white"
+              style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', boxShadow: '0 2px 10px rgba(99,102,241,0.30)' }}
             >
               <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
               Ajouter
