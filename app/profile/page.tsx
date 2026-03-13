@@ -172,8 +172,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={emailLoading}
-                className="flex items-center justify-center gap-2 px-4 py-2.5 text-[13px] font-semibold rounded-xl transition-all disabled:opacity-50 text-white"
-                style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', boxShadow: '0 2px 10px rgba(99,102,241,0.28)' }}
+                className="flex items-center justify-center gap-2 px-4 py-2.5 text-[13px] font-bold rounded-xl transition-all disabled:opacity-50 bg-[var(--c-btn)] hover:bg-[var(--c-btn-hover)] text-[var(--c-btn-text)]"
               >
                 {emailLoading
                   ? <Loader2 className="w-3.5 h-3.5 animate-spin" />
@@ -219,8 +218,7 @@ export default function ProfilePage() {
               <button
                 type="submit"
                 disabled={passwordLoading}
-                className="flex items-center justify-center gap-2 px-4 py-2.5 text-[13px] font-semibold rounded-xl transition-all disabled:opacity-50 text-white"
-                style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', boxShadow: '0 2px 10px rgba(99,102,241,0.28)' }}
+                className="flex items-center justify-center gap-2 px-4 py-2.5 text-[13px] font-bold rounded-xl transition-all disabled:opacity-50 bg-[var(--c-btn)] hover:bg-[var(--c-btn-hover)] text-[var(--c-btn-text)]"
               >
                 {passwordLoading
                   ? <Loader2 className="w-3.5 h-3.5 animate-spin" />

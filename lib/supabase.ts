@@ -29,9 +29,13 @@ export async function getCard(id: string): Promise<Card | null> {
 }
 
 export async function createCard(card: Omit<Card, 'id' | 'created_at'>): Promise<Card> {
-  const { data, error } = await getClient()
+  const client = getClient()
+  const { data: { user } } = await client.auth.getUser()
+  if (!user) throw new Error('Non authentifié')
+
+  const { data, error } = await client
     .from('cards')
-    .insert([card])
+    .insert([{ ...card, user_id: user.id }])
     .select()
     .single()
   if (error) throw error

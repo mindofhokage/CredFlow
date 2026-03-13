@@ -48,8 +48,7 @@ export default function DashboardPage() {
             </Link>
             <button
               onClick={() => setShowAddCard(true)}
-              className="flex items-center gap-1.5 px-4 py-1.5 text-[13px] font-semibold rounded-full transition-all duration-200 text-white"
-              style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', boxShadow: '0 2px 10px rgba(99,102,241,0.30)' }}
+              className="flex items-center gap-1.5 px-4 py-1.5 text-[13px] font-bold rounded-full transition-all duration-200 bg-[var(--c-btn)] hover:bg-[var(--c-btn-hover)] text-[var(--c-btn-text)]"
             >
               <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
               Ajouter
@@ -74,8 +73,8 @@ export default function DashboardPage() {
                 className="bg-[var(--c-surface)] rounded-2xl px-5 py-4 border border-[var(--c-border)]"
                 style={{ boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 1px 2px rgba(0,0,0,0.03)' }}
               >
-                <p className="text-[11px] font-medium text-[var(--c-text-2)] uppercase tracking-wider mb-1.5">{stat.label}</p>
-                <p className="text-2xl font-bold tracking-tight text-[var(--c-text)]">{stat.value}</p>
+                <p className="text-[11px] font-semibold text-[var(--c-text-3)] uppercase tracking-widest mb-1.5">{stat.label}</p>
+                <p className="text-2xl font-black tracking-tight text-[var(--c-text)]">{stat.value}</p>
                 {stat.sub && <p className="text-[11px] text-[var(--c-text-3)] mt-0.5">{stat.sub}</p>}
                 {stat.bar && (
                   <div className="mt-2.5 w-full h-[3px] bg-[var(--c-gray-3)] rounded-full overflow-hidden">

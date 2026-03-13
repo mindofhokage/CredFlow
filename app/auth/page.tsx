@@ -84,17 +84,7 @@ export default function AuthPage() {
             style={{ fontFamily: 'system-ui, -apple-system, sans-serif' }}
           >
             <span className="font-light text-[var(--c-text)]">Cred</span>
-            <span
-              className="font-bold"
-              style={{
-                background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              Flow
-            </span>
+            <span className="font-black text-[var(--c-text)]">Flow</span>
           </h1>
           <p className="mt-2 text-[13px] text-[var(--c-text-3)] tracking-wide">
             Gérez vos cartes. Maîtrisez vos dépenses.
@@ -199,11 +189,7 @@ export default function AuthPage() {
             <button
               type="submit"
               disabled={loading}
-              className="mt-1 w-full py-3 text-[14px] font-semibold rounded-xl transition-all duration-200 disabled:opacity-50 flex items-center justify-center gap-2 text-white"
-              style={{
-                background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)',
-                boxShadow: loading ? 'none' : '0 4px 14px rgba(99,102,241,0.35)',
-              }}
+              className="mt-1 w-full py-3 text-[14px] font-bold rounded-xl transition-all duration-200 disabled:opacity-50 flex items-center justify-center gap-2 bg-[var(--c-btn)] hover:bg-[var(--c-btn-hover)] text-[var(--c-btn-text)]"
             >
               {loading && <Loader2 className="w-4 h-4 animate-spin" />}
               {tab === 'login' ? 'Se connecter' : 'Créer mon compte'}

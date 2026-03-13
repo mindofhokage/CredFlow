@@ -84,6 +84,7 @@ export default function AddCardModal({ onClose, onCreated }: AddCardModalProps) 
     network: null as CardNetwork,
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
+  const [submitError, setSubmitError] = useState<string | null>(null)
   const [showSuggestions, setShowSuggestions] = useState(false)
 
   const suggestions = POPULAR_PROVIDERS.filter(
@@ -140,6 +141,7 @@ export default function AddCardModal({ onClose, onCreated }: AddCardModalProps) 
     e.preventDefault()
     if (!validate()) return
     setLoading(true)
+    setSubmitError(null)
     try {
       const card = await createCard({
         provider: form.provider.trim(),
@@ -153,7 +155,10 @@ export default function AddCardModal({ onClose, onCreated }: AddCardModalProps) 
         color: null,
       })
       onCreated(card)
-    } catch (err) { console.error(err) } finally { setLoading(false) }
+    } catch (err) {
+      console.error(err)
+      setSubmitError(err instanceof Error ? err.message : 'Erreur lors de la création')
+    } finally { setLoading(false) }
   }
 
   return (
@@ -295,6 +300,12 @@ export default function AddCardModal({ onClose, onCreated }: AddCardModalProps) 
               className={cn(inputClass(errors.last_four), 'w-28 text-center font-mono tracking-widest')}
             />
           </div>
+
+          {submitError && (
+            <p className="text-[13px] text-red-500 bg-red-50 dark:bg-red-950/20 px-3.5 py-2.5 rounded-xl border border-red-100 dark:border-red-900/30">
+              {submitError}
+            </p>
+          )}
 
           <div className="pt-2">
             <button type="submit" disabled={loading}

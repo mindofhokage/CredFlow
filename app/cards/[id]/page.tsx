@@ -113,16 +113,16 @@ export default function CardDetailPage() {
         {/* Stats row */}
         <div className="grid grid-cols-2 gap-3">
           <div className="bg-[var(--c-surface)] rounded-2xl px-5 py-4 border border-[var(--c-border)]" style={cardStyle}>
-            <p className="text-[11px] font-medium text-[var(--c-text-2)] uppercase tracking-wider mb-1.5">Ce mois</p>
-            <p className="text-xl font-bold tracking-tight text-[var(--c-text)]">{formatCurrency(currentSpend)}</p>
+            <p className="text-[11px] font-semibold text-[var(--c-text-3)] uppercase tracking-widest mb-1.5">Ce mois</p>
+            <p className="text-xl font-black tracking-tight text-[var(--c-text)]">{formatCurrency(currentSpend)}</p>
             <p className="text-[11px] text-[var(--c-text-3)] mt-0.5">
               {currentPeriodExpenses.length} transaction{currentPeriodExpenses.length !== 1 ? 's' : ''}
             </p>
           </div>
 
           <div className="bg-[var(--c-surface)] rounded-2xl px-5 py-4 border border-[var(--c-border)]" style={cardStyle}>
-            <p className="text-[11px] font-medium text-[var(--c-text-2)] uppercase tracking-wider mb-1.5">Utilisation</p>
-            <p className="text-xl font-bold tracking-tight text-[var(--c-text)]">{utilization}%</p>
+            <p className="text-[11px] font-semibold text-[var(--c-text-3)] uppercase tracking-widest mb-1.5">Utilisation</p>
+            <p className="text-xl font-black tracking-tight text-[var(--c-text)]">{utilization}%</p>
             <div className="mt-2.5 w-full h-[3px] bg-[var(--c-gray-3)] rounded-full overflow-hidden">
               <div className="h-full bg-[var(--c-progress)] rounded-full" style={{ width: `${utilization}%` }} />
             </div>
@@ -195,8 +195,7 @@ export default function CardDetailPage() {
 
             <button
               onClick={() => setShowAddExpense(true)}
-              className="flex items-center gap-1.5 px-4 py-1.5 text-[12px] font-semibold rounded-full transition-all duration-200 text-white"
-              style={{ background: 'linear-gradient(135deg, #6366F1 0%, #8B5CF6 100%)', boxShadow: '0 2px 10px rgba(99,102,241,0.30)' }}
+              className="flex items-center gap-1.5 px-4 py-1.5 text-[12px] font-bold rounded-full transition-all duration-200 bg-[var(--c-btn)] hover:bg-[var(--c-btn-hover)] text-[var(--c-btn-text)]"
             >
               <Plus className="w-3.5 h-3.5" strokeWidth={2.5} />
               Ajouter

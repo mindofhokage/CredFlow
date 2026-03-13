@@ -2,106 +2,78 @@
 
 :root {
   /* Surfaces */
-  --c-bg: #F5F5F7;
+  --c-bg: #F2F2F2;
   --c-surface: #FFFFFF;
-  --c-input-bg: #F5F5F7;
+  --c-input-bg: #EBEBEB;
   --c-input-focus: #FFFFFF;
-  --c-header-bg: rgba(245, 245, 247, 0.72);
-  --c-hover: #F0F0F5;
-  --c-hover-sm: #E5E5EA;
-  --c-hover-icon: rgba(0, 0, 0, 0.05);
+  --c-header-bg: rgba(255, 255, 255, 0.96);
+  --c-hover: #EBEBEB;
+  --c-hover-sm: #E0E0E0;
+  --c-hover-icon: rgba(0, 0, 0, 0.07);
 
   /* Text */
-  --c-text: #1D1D1F;
-  --c-text-2: #6E6E73;
-  --c-text-3: #AEAEB2;
+  --c-text: #000000;
+  --c-text-2: #545454;
+  --c-text-3: #9E9E9E;
 
   /* Borders */
-  --c-border: rgba(0, 0, 0, 0.06);
-  --c-border-md: rgba(0, 0, 0, 0.08);
-  --c-divide: rgba(0, 0, 0, 0.04);
-  --c-focus-border: rgba(0, 0, 0, 0.20);
-  --c-focus-ring: rgba(0, 0, 0, 0.04);
+  --c-border: rgba(0, 0, 0, 0.08);
+  --c-border-md: rgba(0, 0, 0, 0.12);
+  --c-divide: rgba(0, 0, 0, 0.07);
+  --c-focus-border: #000000;
+  --c-focus-ring: rgba(0, 0, 0, 0.06);
 
   /* Misc */
-  --c-gray-3: #E5E5EA;
-  --c-progress: #1D1D1F;
+  --c-gray-3: #DEDEDE;
+  --c-progress: #000000;
 
-  /* Buttons (inverted in dark) */
-  --c-btn: #1D1D1F;
-  --c-btn-hover: #3A3A3C;
+  /* Buttons — solid black */
+  --c-btn: #000000;
+  --c-btn-hover: #1A1A1A;
   --c-btn-text: #FFFFFF;
-
-  /* Background glow colors */
-  --c-glow-1: rgba(99, 102, 241, 0.08);
-  --c-glow-2: rgba(139, 92, 246, 0.05);
-  --c-glow-3: rgba(79, 70, 229, 0.04);
 }
 
 .dark {
   /* Surfaces */
-  --c-bg: #08080A;
-  --c-surface: #1C1C1E;
-  --c-input-bg: #2C2C2E;
-  --c-input-focus: #3A3A3C;
-  --c-header-bg: rgba(8, 8, 10, 0.72);
-  --c-hover: #2C2C2E;
-  --c-hover-sm: #3A3A3C;
+  --c-bg: #000000;
+  --c-surface: #141414;
+  --c-input-bg: #1C1C1C;
+  --c-input-focus: #242424;
+  --c-header-bg: rgba(0, 0, 0, 0.96);
+  --c-hover: #1C1C1C;
+  --c-hover-sm: #282828;
   --c-hover-icon: rgba(255, 255, 255, 0.08);
 
   /* Text */
-  --c-text: #F5F5F7;
-  --c-text-2: #98989D;
-  --c-text-3: #6D6D72;
+  --c-text: #FFFFFF;
+  --c-text-2: #ABABAB;
+  --c-text-3: #6B6B6B;
 
   /* Borders */
-  --c-border: rgba(255, 255, 255, 0.06);
-  --c-border-md: rgba(255, 255, 255, 0.08);
-  --c-divide: rgba(255, 255, 255, 0.04);
-  --c-focus-border: rgba(255, 255, 255, 0.20);
+  --c-border: rgba(255, 255, 255, 0.08);
+  --c-border-md: rgba(255, 255, 255, 0.12);
+  --c-divide: rgba(255, 255, 255, 0.07);
+  --c-focus-border: #FFFFFF;
   --c-focus-ring: rgba(255, 255, 255, 0.06);
 
   /* Misc */
-  --c-gray-3: #3A3A3C;
-  --c-progress: #F5F5F7;
+  --c-gray-3: #2A2A2A;
+  --c-progress: #FFFFFF;
 
-  /* Buttons */
-  --c-btn: #F5F5F7;
-  --c-btn-hover: #E5E5EA;
-  --c-btn-text: #1D1D1F;
-
-  /* Background glow colors — stronger in dark */
-  --c-glow-1: rgba(99, 102, 241, 0.28);
-  --c-glow-2: rgba(139, 92, 246, 0.16);
-  --c-glow-3: rgba(167, 139, 250, 0.08);
+  /* Buttons — solid white */
+  --c-btn: #FFFFFF;
+  --c-btn-hover: #E8E8E8;
+  --c-btn-text: #000000;
 }
 
 * {
   box-sizing: border-box;
 }
 
-/* Premium background — fixed so it doesn't scroll */
 html {
   background-color: var(--c-bg);
-  background-image:
-    radial-gradient(ellipse 150% 70% at 50% -10%, var(--c-glow-1) 0%, transparent 60%),
-    radial-gradient(ellipse 80%  60% at 95%  -5%, var(--c-glow-2) 0%, transparent 50%),
-    radial-gradient(ellipse 60%  50% at  5%  30%, var(--c-glow-3) 0%, transparent 55%);
-  background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* Subtle grain texture for depth */
-html::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 256px 256px;
-  opacity: 0.025;
 }
 
 body {
